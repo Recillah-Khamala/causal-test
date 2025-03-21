@@ -15,5 +15,8 @@
       "dest": "/index.html"
     }
   ],
-  "buildCommand": "npm install --legacy-peer-deps && npm run build"
+  "buildCommand": "npm install --legacy-peer-deps && npm run build",
+  "env": {
+    "NODE_OPTIONS": "--openssl-legacy-provider"
+  }
 }
