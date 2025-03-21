@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import useStore from './store';
 import { useQuery } from '@tanstack/react-query';
+import { evaluate } from 'mathjs';
 
 const OPERATORS = ['+', '-', '*', '/', '^', '(', ')'];
 
@@ -14,9 +15,9 @@ interface Suggestion {
 const fetchAutocompleteSuggestions = async (): Promise<Suggestion[]> => {
   try {
     const response = await fetch('https://652f91320b8d8ddac0b2b62b.mockapi.io/autocomplete');
-  if (!response.ok) {
-    throw new Error('Network response was not ok');
-  }
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
     const data = await response.json();
     console.log('🔵 API Response:', data);
     return data;
@@ -186,15 +187,19 @@ const FormulaInput = () => {
       throw new Error('Incomplete expression');
     }
 
-    const func = new Function(`return ${expression}`);
-    const result = func();
-    
-    if (typeof result !== 'number' || !isFinite(result)) {
-      throw new Error('Invalid result');
+    try {
+      const result = evaluate(expression);
+      
+      if (typeof result !== 'number' || !isFinite(result)) {
+        throw new Error('Invalid result');
+      }
+      
+      console.log('📊 Calculation result:', result);
+      return result;
+    } catch (error) {
+      console.error('❌ Expression evaluation error:', error);
+      throw new Error('Invalid expression');
     }
-    
-    console.log('📊 Calculation result:', result);
-    return result;
   };
 
   const calculateResult = () => {
@@ -373,11 +378,11 @@ const FormulaInput = () => {
             Example formula: (basic_courses * 500) + (intermediate_courses * 750) + (advanced_courses * 1000)
           </p>
         </div>
-      <input
+        <input
           ref={inputRef}
-        type="text"
-        value={input}
-        onChange={handleInputChange}
+          type="text"
+          value={input}
+          onChange={handleInputChange}
           onKeyDown={handleKeyDown}
           className="border p-2 w-full rounded-md"
           placeholder="Enter formula (e.g., (name 1 * 500) + (name 2 * 750) + (name 3 * 1000))"
