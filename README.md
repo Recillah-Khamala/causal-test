@@ -51,6 +51,10 @@ yarn dev
 5. Select values for each variable using the dropdowns
 6. View the calculated result in real-time
 
+## Deployed link
+
+run [https://causal-test.vercel.app/](https://causal-test.vercel.app/) in your browser.
+
 ## Built With
 
 - React
