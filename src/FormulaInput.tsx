@@ -14,9 +14,9 @@ interface Suggestion {
 const fetchAutocompleteSuggestions = async (): Promise<Suggestion[]> => {
   try {
     const response = await fetch('https://652f91320b8d8ddac0b2b62b.mockapi.io/autocomplete');
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
+  if (!response.ok) {
+    throw new Error('Network response was not ok');
+  }
     const data = await response.json();
     console.log('🔵 API Response:', data);
     return data;
@@ -373,11 +373,11 @@ const FormulaInput = () => {
             Example formula: (basic_courses * 500) + (intermediate_courses * 750) + (advanced_courses * 1000)
           </p>
         </div>
-        <input
+      <input
           ref={inputRef}
-          type="text"
-          value={input}
-          onChange={handleInputChange}
+        type="text"
+        value={input}
+        onChange={handleInputChange}
           onKeyDown={handleKeyDown}
           className="border p-2 w-full rounded-md"
           placeholder="Enter formula (e.g., (name 1 * 500) + (name 2 * 750) + (name 3 * 1000))"
